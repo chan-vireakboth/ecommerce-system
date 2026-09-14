@@ -29,6 +29,11 @@
         <dependencies>
             <dependency>
                 <groupId>mptc.gov.kh</groupId>
+                <artifactId>common-restapi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
                 <artifactId>common-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
