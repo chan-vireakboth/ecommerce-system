@@ -1,4 +1,23 @@
 package mptc.gov.kh.ecommerce.order.restapi.dto;
 
-public record OrderCreateRequest() {
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+@Builder
+public record OrderCreateRequest(
+        @NotNull
+        UUID customerId,
+        @NotNull
+        UUID businessId,
+        @NotNull
+        OrderAddressRequest orderAddress,
+        @NotNull
+        List<OrderItemRequest> items,
+        @NotNull
+        BigDecimal price
+) {
 }

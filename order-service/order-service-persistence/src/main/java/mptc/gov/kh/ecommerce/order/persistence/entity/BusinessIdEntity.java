@@ -1,4 +1,4 @@
-package mptc.gov.kh.ecommerce.persistence.entity;
+package mptc.gov.kh.ecommerce.order.persistence.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

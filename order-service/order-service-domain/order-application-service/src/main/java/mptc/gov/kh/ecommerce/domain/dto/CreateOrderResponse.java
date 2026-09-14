@@ -1,4 +1,6 @@
 package mptc.gov.kh.ecommerce.domain.dto;
 
-public record CreateOrderResponse() {
+import mptc.gov.kh.ecommerce.domain.valueobject.OrderId;
+
+public record CreateOrderResponse(OrderId orderId) {
 }

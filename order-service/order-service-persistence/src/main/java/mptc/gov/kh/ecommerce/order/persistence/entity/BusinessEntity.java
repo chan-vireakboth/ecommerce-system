@@ -1,4 +1,4 @@
-package mptc.gov.kh.ecommerce.persistence.entity;
+package mptc.gov.kh.ecommerce.order.persistence.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mptc.gov.kh.ecommerce.domain.entity.Product;
 
 import java.math.BigDecimal;
 import java.util.UUID;

@@ -1,4 +1,11 @@
 package mptc.gov.kh.ecommerce.order.restapi.dto;
 
-public record OrderCreateResponse() {
+import lombok.Builder;
+
+import java.util.UUID;
+
+@Builder
+public record OrderCreateResponse(
+        UUID orderId
+) {
 }

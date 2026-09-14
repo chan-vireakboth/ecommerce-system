@@ -1,8 +1,8 @@
-package mptc.gov.kh.ecommerce.persistence.adapter;
+package mptc.gov.kh.ecommerce.order.persistence.adapter;
 
 import mptc.gov.kh.ecommerce.domain.entity.Order;
 import mptc.gov.kh.ecommerce.domain.port.output.OrderRepository;
-import mptc.gov.kh.ecommerce.persistence.repository.OrderJpaRepository;
+import mptc.gov.kh.ecommerce.order.persistence.repository.OrderJpaRepository;
 
 public class OrderRepositoryAdapter implements OrderRepository {
 

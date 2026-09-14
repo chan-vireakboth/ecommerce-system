@@ -1,6 +1,6 @@
-package mptc.gov.kh.ecommerce.persistence.repository;
+package mptc.gov.kh.ecommerce.order.persistence.repository;
 
-import mptc.gov.kh.ecommerce.persistence.entity.OrderEntity;
+import mptc.gov.kh.ecommerce.order.persistence.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
