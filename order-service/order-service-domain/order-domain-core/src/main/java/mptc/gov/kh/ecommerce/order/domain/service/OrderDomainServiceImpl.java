@@ -1,4 +1,4 @@
-package mptc.gov.kh.ecommerce.domain.service;
+package mptc.gov.kh.ecommerce.order.domain.service;
 
 public class OrderDomainServiceImpl implements OrderDomainService {
 }

@@ -1,8 +1,9 @@
-package mptc.gov.kh.ecommerce.domain.entity;
+package mptc.gov.kh.ecommerce.order.domain.entity;
 
+import mptc.gov.kh.ecommerce.domain.entity.AggregateRoot;
 import mptc.gov.kh.ecommerce.domain.valueobject.CustomerId;
 
-public class Customer extends AggregateRoot<CustomerId>{
+public class Customer extends AggregateRoot<CustomerId> {
     private final String username;
     private final String familyName;
     private final String givenName;

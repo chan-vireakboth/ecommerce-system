@@ -1,10 +1,11 @@
-package mptc.gov.kh.ecommerce.domain.event;
+package mptc.gov.kh.ecommerce.order.domain.event;
 
-import mptc.gov.kh.ecommerce.domain.entity.Order;
+import mptc.gov.kh.ecommerce.domain.event.DomainEvent;
+import mptc.gov.kh.ecommerce.order.domain.entity.Order;
 
 import java.time.ZonedDateTime;
 
-public abstract class OrderEvent implements DomainEvent<Order>{
+public abstract class OrderEvent implements DomainEvent<Order> {
     private final Order order;
     private final ZonedDateTime createdAt;
 

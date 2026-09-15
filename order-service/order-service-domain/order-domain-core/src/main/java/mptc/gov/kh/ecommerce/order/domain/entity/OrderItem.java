@@ -1,10 +1,11 @@
-package mptc.gov.kh.ecommerce.domain.entity;
+package mptc.gov.kh.ecommerce.order.domain.entity;
 
+import mptc.gov.kh.ecommerce.domain.entity.AggregateRoot;
 import mptc.gov.kh.ecommerce.domain.valueobject.Money;
 import mptc.gov.kh.ecommerce.domain.valueobject.OrderId;
 import mptc.gov.kh.ecommerce.domain.valueobject.OrderItemId;
 
-public class OrderItem extends AggregateRoot<OrderItemId>{
+public class OrderItem extends AggregateRoot<OrderItemId> {
     private OrderId orderId;
 
     private final Product product;

@@ -1,5 +1,6 @@
-package mptc.gov.kh.ecommerce.domain.entity;
+package mptc.gov.kh.ecommerce.order.domain.entity;
 
+import mptc.gov.kh.ecommerce.domain.entity.BaseEntity;
 import mptc.gov.kh.ecommerce.domain.valueobject.Money;
 import mptc.gov.kh.ecommerce.domain.valueobject.OrderItemId;
 import mptc.gov.kh.ecommerce.domain.valueobject.ProductId;

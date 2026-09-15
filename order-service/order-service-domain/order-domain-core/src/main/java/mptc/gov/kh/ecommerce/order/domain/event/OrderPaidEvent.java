@@ -1,6 +1,6 @@
-package mptc.gov.kh.ecommerce.domain.event;
+package mptc.gov.kh.ecommerce.order.domain.event;
 
-import mptc.gov.kh.ecommerce.domain.entity.Order;
+import mptc.gov.kh.ecommerce.order.domain.entity.Order;
 
 import java.time.ZonedDateTime;
 

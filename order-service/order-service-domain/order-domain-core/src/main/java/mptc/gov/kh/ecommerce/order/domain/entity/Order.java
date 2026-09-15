@@ -1,12 +1,13 @@
-package mptc.gov.kh.ecommerce.domain.entity;
+package mptc.gov.kh.ecommerce.order.domain.entity;
 
-import mptc.gov.kh.ecommerce.domain.exception.OrderDomainException;
+import mptc.gov.kh.ecommerce.domain.entity.AggregateRoot;
+import mptc.gov.kh.ecommerce.order.domain.exception.OrderDomainException;
 import mptc.gov.kh.ecommerce.domain.valueobject.*;
 
 import java.util.List;
 import java.util.UUID;
 
-public class Order extends AggregateRoot<OrderId>{
+public class Order extends AggregateRoot<OrderId> {
     private final CustomerId customerId;
     private final BusinessId businessId;
     private final StreetAddress streetAddress;

@@ -1,10 +1,11 @@
-package mptc.gov.kh.ecommerce.domain.entity;
+package mptc.gov.kh.ecommerce.order.domain.entity;
 
+import mptc.gov.kh.ecommerce.domain.entity.AggregateRoot;
 import mptc.gov.kh.ecommerce.domain.valueobject.BusinessId;
 
 import java.util.List;
 
-public class Business extends AggregateRoot<BusinessId>{
+public class Business extends AggregateRoot<BusinessId> {
     private List<Product> products;
     private final boolean active;
 
