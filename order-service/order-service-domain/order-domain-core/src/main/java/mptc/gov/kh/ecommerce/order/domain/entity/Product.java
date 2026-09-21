@@ -23,6 +23,9 @@ public class Product extends BaseEntity<ProductId> {
         price = builder.price;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static final class Builder {
         private OrderItemId id;
