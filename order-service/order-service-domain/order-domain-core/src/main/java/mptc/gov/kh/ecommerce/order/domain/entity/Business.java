@@ -17,6 +17,10 @@ public class Business extends AggregateRoot<BusinessId> {
         return active;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     private Business(Builder builder) {
         super.setId(builder.id);
         products = builder.products;
@@ -29,10 +33,6 @@ public class Business extends AggregateRoot<BusinessId> {
         private boolean active;
 
         private Builder() {
-        }
-
-        public static Builder builder() {
-            return new Builder();
         }
 
         public Builder id(BusinessId val) {
