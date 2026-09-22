@@ -37,5 +37,5 @@ public class OrderEntity {
 
     private OrderStatus orderStatus;
 
-    private String failureMessage; //message1; message2
+    private String failureMessages; //message1; message2
 }

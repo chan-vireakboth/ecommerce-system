@@ -16,7 +16,19 @@ public class Order extends AggregateRoot<OrderId> {
 
     private TrackingId trackingId;
     private OrderStatus orderStatus;
-    private List<String> failureMessage;
+    private List<String> failureMessages;
+
+    private Order(Builder builder) {
+        super.setId(builder.id);
+        customerId = builder.customerId;
+        businessId = builder.businessId;
+        streetAddress = builder.streetAddress;
+        price = builder.price;
+        items = builder.items;
+        trackingId = builder.trackingId;
+        orderStatus = builder.orderStatus;
+        failureMessages = builder.failureMessages;
+    }
 
     //Start Business Logic
     public void validateOrder(){
@@ -93,7 +105,7 @@ public class Order extends AggregateRoot<OrderId> {
             throw new OrderDomainException("Order is not in correct state for init cancel operation");
         }
         orderStatus = OrderStatus.CANCELLING;
-        updateFailureMessages(failureMessage);
+        updateFailureMessages(failureMessages);
     }
 
     public void cancel(){
@@ -101,18 +113,18 @@ public class Order extends AggregateRoot<OrderId> {
             throw new OrderDomainException("Order is not in correct state for cancel operation");
         }
         orderStatus = OrderStatus.CANCELLED;
-        updateFailureMessages(failureMessage);
+        updateFailureMessages(failureMessages);
     }
 
     private void updateFailureMessages(List<String> failureMessages) {
-        if (failureMessages != null && this.failureMessage != null) {
-            this.failureMessage.addAll(
+        if (failureMessages != null && this.failureMessages != null) {
+            this.failureMessages.addAll(
                     failureMessages.stream().filter(message -> !message.isBlank()).toList()
             );
         }
 
-        if (this.failureMessage == null) {
-            this.failureMessage = failureMessages;
+        if (this.failureMessages == null) {
+            this.failureMessages = failureMessages;
         }
     }
 
@@ -147,22 +159,13 @@ public class Order extends AggregateRoot<OrderId> {
         return orderStatus;
     }
 
-    public List<String> getFailureMessage() {
-        return failureMessage;
+    public List<String> getFailureMessages() {
+        return failureMessages;
     }
 
-    private Order(Builder builder) {
-        super.setId(builder.id);
-        customerId = builder.customerId;
-        businessId = builder.businessId;
-        streetAddress = builder.streetAddress;
-        price = builder.price;
-        items = builder.items;
-        trackingId = builder.trackingId;
-        orderStatus = builder.orderStatus;
-        failureMessage = builder.failureMessage;
+    public static Builder builder() {
+        return new Builder();
     }
-
 
     public static final class Builder {
         private OrderId id;
@@ -173,13 +176,9 @@ public class Order extends AggregateRoot<OrderId> {
         private List<OrderItem> items;
         private TrackingId trackingId;
         private OrderStatus orderStatus;
-        private List<String> failureMessage;
+        private List<String> failureMessages;
 
         private Builder() {
-        }
-
-        public static Builder builder() {
-            return new Builder();
         }
 
         public Builder id(OrderId val) {
@@ -222,8 +221,8 @@ public class Order extends AggregateRoot<OrderId> {
             return this;
         }
 
-        public Builder failureMessage(List<String> val) {
-            failureMessage = val;
+        public Builder failureMessages(List<String> val) {
+            failureMessages = val;
             return this;
         }
 

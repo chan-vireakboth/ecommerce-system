@@ -2,18 +2,11 @@ package mptc.gov.kh.ecommerce.order.domain.entity;
 
 import mptc.gov.kh.ecommerce.domain.entity.BaseEntity;
 import mptc.gov.kh.ecommerce.domain.valueobject.Money;
-import mptc.gov.kh.ecommerce.domain.valueobject.OrderItemId;
 import mptc.gov.kh.ecommerce.domain.valueobject.ProductId;
 
 public class Product extends BaseEntity<ProductId> {
     private final String name;
     private final Money price;
-
-    private Product(Builder builder) {
-        super.setId(builder.id);
-        name = builder.name;
-        price = builder.price;
-    }
 
     public String getName() {
         return name;
@@ -23,6 +16,15 @@ public class Product extends BaseEntity<ProductId> {
         return price;
     }
 
+    private Product(Builder builder) {
+        super.setId(builder.id);
+        name = builder.name;
+        price = builder.price;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static final class Builder {
         private ProductId id;
@@ -32,9 +34,7 @@ public class Product extends BaseEntity<ProductId> {
         private Builder() {
         }
 
-        public static Builder builder() {
-            return new Builder();
-        }
+
 
         public Builder id(ProductId val) {
             id = val;
