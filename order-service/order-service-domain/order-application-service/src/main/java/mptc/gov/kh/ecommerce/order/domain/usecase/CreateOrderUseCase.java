@@ -8,12 +8,17 @@ import mptc.gov.kh.ecommerce.domain.valueobject.ProductId;
 import mptc.gov.kh.ecommerce.order.domain.dto.CreateOrderCommand;
 import mptc.gov.kh.ecommerce.order.domain.dto.CreateOrderResult;
 import mptc.gov.kh.ecommerce.order.domain.entity.Business;
+import mptc.gov.kh.ecommerce.order.domain.entity.Order;
 import mptc.gov.kh.ecommerce.order.domain.entity.Product;
+import mptc.gov.kh.ecommerce.order.domain.event.OrderCreatedEvent;
 import mptc.gov.kh.ecommerce.order.domain.exception.OrderDomainException;
+import mptc.gov.kh.ecommerce.order.domain.mapper.OrderDomainMapper;
 import mptc.gov.kh.ecommerce.order.domain.port.output.BusinessRepository;
 import mptc.gov.kh.ecommerce.order.domain.port.output.CustomerRepository;
 import mptc.gov.kh.ecommerce.order.domain.port.output.OrderRepository;
+import mptc.gov.kh.ecommerce.order.domain.service.OrderDomainService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,10 +28,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CreateOrderUseCase {
 
+    private final OrderDomainService orderDomainService;
+    private final OrderDomainMapper orderDomainMapper;
+
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final BusinessRepository businessRepository;
 
+    @Transactional
     public CreateOrderResult execute(CreateOrderCommand createOrderCommand) {
         log.info("executing CreateOrderUseCase: {}", createOrderCommand);
 
@@ -52,7 +61,19 @@ public class CreateOrderUseCase {
 
         log.info("Found business: {}", business);
 
-        return new CreateOrderResult(UUID.randomUUID());
+        // Invoke order domain logic
+        Order order = orderDomainMapper.createOrderCommandToOrder(createOrderCommand);
+        log.info("Order price: {}", order.getPrice().amount());
+        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitiateOrder(order, business);
+        log.info("Order created event: {}", orderCreatedEvent.getOrder().getId());
+
+        //Save order into database
+        Order savedOrder = orderRepository.saveOrder(order);
+        if (savedOrder == null) {
+            throw new OrderDomainException("Could not save order into database");
+        }
+
+        return new CreateOrderResult(savedOrder.getId().value());
     }
 
 }

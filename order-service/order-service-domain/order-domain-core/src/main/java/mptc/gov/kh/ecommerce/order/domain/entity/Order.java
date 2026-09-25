@@ -55,9 +55,10 @@ public class Order extends AggregateRoot<OrderId> {
     private void validateItemsPrice() {
         Money orderItemsTotalPrice = items.stream()
                 .map(orderItem -> {
-            validateItemPrice(orderItem);
-            return orderItem.getSubTotal();
-        }).reduce(Money.ZERO, Money::add);
+                    validateItemPrice(orderItem);
+                    return orderItem.getSubTotal();
+                })
+                .reduce(Money.ZERO, Money::add);
 
         if (!price.equals(orderItemsTotalPrice)){
             throw new OrderDomainException("Total price: " + price.amount() +
@@ -100,7 +101,7 @@ public class Order extends AggregateRoot<OrderId> {
         orderStatus = OrderStatus.APPROVED;
     }
 
-    public void initCancel(){
+    public void initCancel(List<String> failureMessages){
         if (orderStatus != OrderStatus.PAID) {
             throw new OrderDomainException("Order is not in correct state for init cancel operation");
         }
@@ -108,7 +109,7 @@ public class Order extends AggregateRoot<OrderId> {
         updateFailureMessages(failureMessages);
     }
 
-    public void cancel(){
+    public void cancel(List<String> failureMessages){
         if (!(orderStatus == OrderStatus.CANCELLING || orderStatus == OrderStatus.PENDING)) {
             throw new OrderDomainException("Order is not in correct state for cancel operation");
         }
