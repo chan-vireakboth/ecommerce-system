@@ -1,7 +1,9 @@
 package mptc.gov.kh.ecommerce.order.persistence.mapper;
 
+import mptc.gov.kh.ecommerce.domain.valueobject.StreetAddress;
 import mptc.gov.kh.ecommerce.order.domain.entity.Order;
 import mptc.gov.kh.ecommerce.order.domain.entity.OrderItem;
+import mptc.gov.kh.ecommerce.order.persistence.entity.OrderAddressEntity;
 import mptc.gov.kh.ecommerce.order.persistence.entity.OrderEntity;
 import mptc.gov.kh.ecommerce.order.persistence.entity.OrderItemEntity;
 import org.mapstruct.Mapper;
@@ -19,8 +21,12 @@ public interface OrderPersistenceMapper {
     @Mapping(source = "businessId.value", target = "businessId")
     @Mapping(source = "price.amount", target = "price")
     @Mapping(source = "trackingId.value", target = "trackingId")
+    @Mapping(source = "deliveryAddress", target = "orderAddress")
     @Mapping(source = "failureMessages", target = "failureMessages", qualifiedByName = "mapFailureMessages")
     OrderEntity orderToOrderEntity(Order order);
+
+    @Mapping(target = "id", expression = "java(UUID.randomUUID())")
+    OrderAddressEntity deliveryAddressToOrderAddressEntity(StreetAddress deliveryAddress);
 
     @Named("mapFailureMessages")
     default String mapFailureMessages(List<String> failureMessages) {
@@ -40,6 +46,7 @@ public interface OrderPersistenceMapper {
     @Mapping(target = "businessId.value", source = "businessId")
     @Mapping(target = "price.amount", source = "price")
     @Mapping(target = "trackingId.value", source = "trackingId")
+    @Mapping(target = "deliveryAddress", source = "orderAddress")
     @Mapping(target = "failureMessages", source = "failureMessages", qualifiedByName = "mapFailureMessagesToList")
     Order orderEntityToOrder(OrderEntity orderEntity);
 
