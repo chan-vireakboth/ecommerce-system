@@ -18,6 +18,8 @@
         <module>common</module>
         <module>order-service</module>
         <module>order-service/order-service-domain</module>
+        <module>customer-service</module>
+        <module>customer-service/customer-service-domain</module>
     </modules>
 
     <properties>
@@ -74,6 +76,26 @@
             <dependency>
                 <groupId>mptc.gov.kh</groupId>
                 <artifactId>order-service-main</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>customer-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>customer-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>customer-service-restapi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>customer-service-persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
