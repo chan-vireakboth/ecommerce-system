@@ -20,6 +20,8 @@
         <module>order-service/order-service-domain</module>
         <module>customer-service</module>
         <module>customer-service/customer-service-domain</module>
+        <module>payment-service</module>
+        <module>payment-service/payment-service-domain</module>
     </modules>
 
     <properties>
@@ -98,7 +100,21 @@
                 <artifactId>customer-service-persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>payment-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>payment-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>payment-service-persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
