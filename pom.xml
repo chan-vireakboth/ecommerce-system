@@ -22,6 +22,8 @@
         <module>customer-service/customer-service-domain</module>
         <module>payment-service</module>
         <module>payment-service/payment-service-domain</module>
+        <module>business-service</module>
+        <module>business-service/business-service-domain</module>
     </modules>
 
     <properties>
@@ -113,6 +115,21 @@
             <dependency>
                 <groupId>mptc.gov.kh</groupId>
                 <artifactId>payment-service-persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+            <groupId>mptc.gov.kh</groupId>
+                <artifactId>business-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>business-service-persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>business-application-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
