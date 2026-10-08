@@ -24,6 +24,7 @@
         <module>payment-service/payment-service-domain</module>
         <module>business-service</module>
         <module>business-service/business-service-domain</module>
+        <module>gateway-service</module>
     </modules>
 
     <properties>
