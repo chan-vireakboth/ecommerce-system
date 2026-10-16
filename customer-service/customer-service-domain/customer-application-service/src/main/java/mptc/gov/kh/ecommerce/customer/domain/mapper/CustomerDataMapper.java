@@ -1,0 +1,28 @@
+package mptc.gov.kh.ecommerce.customer.domain.mapper;
+
+import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerCommand;
+import mptc.gov.kh.ecommerce.domain.valueobject.Email;
+import mptc.gov.kh.ecommerce.domain.valueobject.PhoneNumber;
+import mptc.gov.kh.ecommerce.entity.Customer;
+import org.springframework.stereotype.Component;
+
+
+@Component
+public class CustomerDataMapper {
+
+    // id and status are not set here: the domain sets them in initiateCustomer()
+    public Customer createCustomerCommandToCustomer(CreateCustomerCommand createCustomerCommand) {
+        return Customer.builder()
+                .username(createCustomerCommand.username())
+                .familyName(createCustomerCommand.familyName())
+                .givenName(createCustomerCommand.givenName())
+                .email(new Email(createCustomerCommand.email()))
+                .phoneNumber(toPhoneNumber(createCustomerCommand.phoneNumber()))
+                .build();
+    }
+
+    public PhoneNumber toPhoneNumber(String phoneNumber) {
+        return phoneNumber == null ? null : new PhoneNumber(phoneNumber);
+    }
+
+}
