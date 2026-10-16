@@ -2,6 +2,29 @@
 server:
   port: 8585
 
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Order Service
+        url: /order-service/v3/api-docs
+      - name: Customer Service
+        url: /customer-service/v3/api-docs
+      - name: Payment Service
+        url: /payment-service/v3/api-docs
+      - name: Business Service
+        url: /business-service/v3/api-docs
+
+scalar:
+  sources:
+    - title: Order Service
+      url: /order-service/v3/api-docs
+    - title: Customer Service
+      url: /customer-service/v3/api-docs
+    - title: Payment Service
+      url: /payment-service/v3/api-docs
+    - title: Business Service
+      url: /business-service/v3/api-docs
+
 spring:
   application:
     name: gateway-service
@@ -11,13 +34,30 @@ spring:
     gateway:
       server:
         webflux:
+#          routes:
+#          - id: order-service
+#            uri: lb://order-service
+#            predicates:
+#              - Path=/order-service/**
+#            filters:
+#              - RewritePath=/order-service/(?<segment>.*), /$\{segment}
           discovery:
             locator:
               enabled: true
               lower-case-service-id: true
+          trusted-proxies: '.*'
     nacos:
       discovery:
         namespace: ${spring.profiles.active}
       username: nacos
       password: qwer
       server-addr: 127.0.0.1:8848
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'health,info,gateway'
+  endpoint:
+    gateway:
+      access: read_only
