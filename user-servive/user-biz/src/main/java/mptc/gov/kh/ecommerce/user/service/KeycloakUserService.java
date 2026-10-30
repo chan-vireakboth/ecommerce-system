@@ -11,4 +11,6 @@ public interface KeycloakUserService {
     void updateKeycloakUser(String id, UserRepresentation userRepresentation);
 
     UserRepresentation getKeycloakUserById(String id);
+
+    void deleteKeycloakUser(String id);
 }

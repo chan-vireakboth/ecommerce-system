@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getById(String id) {
+    public UserResponse getUserById(String id) {
         UserEntity userEntity = userRepository
                 .findById(id)
                 .orElseThrow(() -> new UserNotFoundException(
@@ -114,5 +114,54 @@ public class UserServiceImpl implements UserService {
                 userEntity,
                 userRepresentation
         );
+    }
+
+    @Override
+    public UserResponse getUserByUsername(String username) {
+        UserEntity userEntity = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(
+                        "User not found",
+                        HttpStatus.NOT_FOUND
+                ));
+        UserRepresentation userRepresentation = keycloakUserService.getKeycloakUserById(userEntity.getId());
+        return userMapper.toResponse(
+                userEntity,
+                userRepresentation
+        );
+    }
+
+    @Override
+    public List<UserResponse> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userEntity -> userMapper.toResponse(
+                        userEntity,
+                        keycloakUserService.getKeycloakUserById(userEntity.getId())
+                ))
+                .toList();
+    }
+
+    @Override
+    public List<UserResponse> getUsersByRoleName(String roleName) {
+        return keycloakRoleService.getKeycloakUsersByRoleName(roleName)
+                .stream()
+                .flatMap(userRepresentation -> userRepository
+                        .findById(userRepresentation.getId())
+                        .map(userEntity -> userMapper.toResponse(userEntity, userRepresentation))
+                        .stream())
+                .toList();
+    }
+
+    @Override
+    public void delete(String id) {
+        UserEntity userEntity = userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException(
+                        "User not found",
+                        HttpStatus.NOT_FOUND
+                ));
+        keycloakUserService.deleteKeycloakUser(id);
+        userRepository.delete(userEntity);
     }
 }

@@ -1,12 +1,16 @@
 package mptc.gov.kh.ecommerce.user.service.impl;
 
 
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mptc.gov.kh.ecommerce.user.config.KeycloakAdminClientConfig;
+import mptc.gov.kh.ecommerce.user.exception.KeycloakException;
 import mptc.gov.kh.ecommerce.user.service.KeycloakRoleService;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.RoleRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -33,6 +37,18 @@ public class KeycloakRoleServiceImpl implements KeycloakRoleService {
                 .roles()
                 .realmLevel()
                 .add(roleRepresentationList);
+    }
+
+    @Override
+    public List<UserRepresentation> getKeycloakUsersByRoleName(String roleName) {
+        try {
+            return keycloak.realm(KeycloakAdminClientConfig.REALM_NAME)
+                    .roles()
+                    .get(roleName)
+                    .getUserMembers();
+        } catch (NotFoundException e) {
+            throw new KeycloakException(HttpStatus.NOT_FOUND, "Role " + roleName + " not found");
+        }
     }
 
 

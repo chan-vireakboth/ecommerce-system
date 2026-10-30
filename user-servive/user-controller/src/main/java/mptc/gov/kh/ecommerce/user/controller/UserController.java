@@ -9,6 +9,8 @@ import mptc.gov.kh.ecommerce.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -27,8 +29,29 @@ public class UserController {
         return userService.update(id, userUpdateRequest);
     }
 
+    @GetMapping
+    public List<UserResponse> getUsers() {
+        return userService.getUsers();
+    }
+
     @GetMapping("/{id}")
-    public UserResponse getById(@PathVariable String id) {
-        return userService.getById(id);
+    public UserResponse getUserById(@PathVariable String id) {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping("/username/{username}")
+    public UserResponse getUserByUsername(@PathVariable String username) {
+        return userService.getUserByUsername(username);
+    }
+
+    @GetMapping("/role/{roleName}")
+    public List<UserResponse> getUsersByRoleName(@PathVariable String roleName) {
+        return userService.getUsersByRoleName(roleName);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        userService.delete(id);
     }
 }
