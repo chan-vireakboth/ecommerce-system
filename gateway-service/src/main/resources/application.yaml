@@ -13,6 +13,8 @@ springdoc:
         url: /payment-service/v3/api-docs
       - name: Business Service
         url: /business-service/v3/api-docs
+      - name: User Service
+        url: /user-service/v3/api-docs
 
 scalar:
   sources:
@@ -24,6 +26,8 @@ scalar:
       url: /payment-service/v3/api-docs
     - title: Business Service
       url: /business-service/v3/api-docs
+    - title: User Service
+      url: /user-service/v3/api-docs
 
 spring:
   application:
@@ -38,11 +42,11 @@ spring:
     gateway:
       server:
         webflux:
-          routes:
-            - id: vue.js
-              uri: http://[::1]:5173 #http://localhost:5173
-              predicates:
-                - Path=/**
+#          routes:
+#            - id: vue.js
+#              uri: http://[::1]:5173 #http://localhost:5173
+#              predicates:
+#                - Path=/**
 #          routes:
 #          - id: order-service
 #            uri: lb://order-service

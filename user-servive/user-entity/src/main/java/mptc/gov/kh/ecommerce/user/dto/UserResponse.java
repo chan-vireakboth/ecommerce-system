@@ -1,9 +1,11 @@
 package mptc.gov.kh.ecommerce.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
 import java.util.Date;
 
+@Builder
 public record UserResponse(
         String id,
         String familyName,
