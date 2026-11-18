@@ -26,6 +26,8 @@
         <module>business-service/business-service-domain</module>
         <module>gateway-service</module>
         <module>user-servive</module>
+        <module>customer-service/customer-service-client</module>
+        <module>common/common-core</module>
     </modules>
 
     <properties>
@@ -39,6 +41,16 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>customer-service-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mptc.gov.kh</groupId>
+                <artifactId>common-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>mptc.gov.kh</groupId>
                 <artifactId>common-restapi</artifactId>

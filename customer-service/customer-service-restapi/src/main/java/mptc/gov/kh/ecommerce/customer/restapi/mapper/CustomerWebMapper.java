@@ -1,13 +1,8 @@
 package mptc.gov.kh.ecommerce.customer.restapi.mapper;
 
-import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerCommand;
-import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerResult;
-import mptc.gov.kh.ecommerce.customer.domain.dto.UpdateCustomerCommand;
-import mptc.gov.kh.ecommerce.customer.domain.dto.UpdateCustomerResult;
-import mptc.gov.kh.ecommerce.customer.restapi.dto.CustomerCreateRequest;
-import mptc.gov.kh.ecommerce.customer.restapi.dto.CustomerCreateResponse;
-import mptc.gov.kh.ecommerce.customer.restapi.dto.CustomerUpdateRequest;
-import mptc.gov.kh.ecommerce.customer.restapi.dto.CustomerUpdateResponse;
+import mptc.gov.kh.ecommerce.core.PageResponse;
+import mptc.gov.kh.ecommerce.customer.domain.dto.*;
+import mptc.gov.kh.ecommerce.customer.restapi.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -22,4 +17,6 @@ public interface CustomerWebMapper {
     @Mapping(source = "customerId", target = "customerId")
     UpdateCustomerCommand customerUpdateRequestToUpdateCustomerCommand(UUID customerId, CustomerUpdateRequest customerUpdateRequest);
     CustomerUpdateResponse updateCustomerResultToCustomerUpdateResponse(UpdateCustomerResult updateCustomerResult);
+
+    PageResponse<CustomerResponse> toCustomerResponse(PageResponse<CustomerResult> result);
 }

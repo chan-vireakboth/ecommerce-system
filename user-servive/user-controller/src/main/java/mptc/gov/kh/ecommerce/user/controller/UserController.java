@@ -34,6 +34,11 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping(value = "/hello")
+    public String hello() {
+        return "Hello Sentinel";
+    }
+
     @GetMapping("/{id}")
     public UserResponse getUserById(@PathVariable String id) {
         return userService.getUserById(id);

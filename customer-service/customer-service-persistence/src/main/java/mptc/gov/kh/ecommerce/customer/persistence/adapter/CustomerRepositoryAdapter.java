@@ -1,5 +1,7 @@
 package mptc.gov.kh.ecommerce.customer.persistence.adapter;
 
+import mptc.gov.kh.ecommerce.core.PageResponse;
+import mptc.gov.kh.ecommerce.customer.domain.dto.CustomerResult;
 import mptc.gov.kh.ecommerce.customer.domain.port.output.CustomerRepository;
 import mptc.gov.kh.ecommerce.customer.persistence.entity.CustomerEntity;
 import mptc.gov.kh.ecommerce.customer.persistence.mapper.CustomerPersistenceMapper;
@@ -7,6 +9,10 @@ import mptc.gov.kh.ecommerce.customer.persistence.repository.CustomerJpaReposito
 import mptc.gov.kh.ecommerce.domain.valueobject.CustomerId;
 import mptc.gov.kh.ecommerce.entity.Customer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -16,6 +22,23 @@ import java.util.Optional;
 public class CustomerRepositoryAdapter implements CustomerRepository {
     private final CustomerJpaRepository customerJpaRepository;
     private final CustomerPersistenceMapper customerPersistenceMapper;
+
+
+    @Cacheable(key = "allCustomers", value = "customer")
+    @Override
+    public PageResponse<CustomerResult> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CustomerEntity> customerEntityPage = customerJpaRepository.findAll(pageable);
+        Page<CustomerResult> customerResultPage = customerEntityPage.map(customerPersistenceMapper::toCustomerResult);
+        return PageResponse.<CustomerResult>builder()
+                .items(customerResultPage.getContent())
+                .page(customerResultPage.getNumber())
+                .size(customerResultPage.getSize())
+                .totalPages(customerResultPage.getTotalPages())
+                .totalElements(customerResultPage.getTotalElements())
+                .hasNext(customerResultPage.hasNext())
+                .build();
+    }
 
     @Override
     public Customer save(Customer customer) {

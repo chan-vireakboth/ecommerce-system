@@ -13,6 +13,14 @@
     <dependencies>
         <dependency>
             <groupId>mptc.gov.kh</groupId>
+            <artifactId>common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mptc.gov.kh</groupId>
+            <artifactId>customer-service-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mptc.gov.kh</groupId>
             <artifactId>customer-domain-core</artifactId>
         </dependency>
         <dependency>

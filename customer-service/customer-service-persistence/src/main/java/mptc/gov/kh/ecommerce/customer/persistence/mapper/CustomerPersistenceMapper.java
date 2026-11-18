@@ -1,5 +1,6 @@
 package mptc.gov.kh.ecommerce.customer.persistence.mapper;
 
+import mptc.gov.kh.ecommerce.customer.domain.dto.CustomerResult;
 import mptc.gov.kh.ecommerce.customer.persistence.entity.CustomerEntity;
 import mptc.gov.kh.ecommerce.domain.valueobject.PhoneNumber;
 import mptc.gov.kh.ecommerce.entity.Customer;
@@ -24,4 +25,6 @@ public interface CustomerPersistenceMapper {
     default PhoneNumber toPhoneNumber(String phoneNumber) {
         return phoneNumber == null ? null : new PhoneNumber(phoneNumber);
     }
+
+    CustomerResult toCustomerResult(CustomerEntity customerEntity);
 }

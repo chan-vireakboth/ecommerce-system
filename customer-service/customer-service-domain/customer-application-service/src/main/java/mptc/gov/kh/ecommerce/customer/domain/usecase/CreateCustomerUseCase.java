@@ -1,5 +1,9 @@
 package mptc.gov.kh.ecommerce.customer.domain.usecase;
 
+import feign.FeignException;
+import mptc.gov.kh.ecommerce.customer.client.dto.UserResponse;
+import mptc.gov.kh.ecommerce.customer.client.exception.UserServiceUnavailableException;
+import mptc.gov.kh.ecommerce.customer.client.feign.UserFeignClient;
 import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerCommand;
 import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerResult;
 import mptc.gov.kh.ecommerce.customer.domain.exception.CustomerAlreadyExistsException;
@@ -7,6 +11,7 @@ import mptc.gov.kh.ecommerce.customer.domain.mapper.CustomerDataMapper;
 import mptc.gov.kh.ecommerce.customer.domain.port.output.CustomerRepository;
 import mptc.gov.kh.ecommerce.entity.Customer;
 import mptc.gov.kh.ecommerce.event.CustomerCreatedEvent;
+import mptc.gov.kh.ecommerce.exception.CustomerDomainException;
 import mptc.gov.kh.ecommerce.service.CustomerDomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +29,20 @@ public class CreateCustomerUseCase {
     private final CustomerDomainService customerDomainService; // business rules (from customer-domain-core)
     private final CustomerRepository customerRepository;
     private final CustomerDataMapper customerDataMapper;
+    private final UserFeignClient userFeignClient;
 
     @Transactional // everything below runs in one DB transaction: if anything fails, nothing is saved
     public CreateCustomerResult execute(CreateCustomerCommand createCustomerCommand) {
         log.info("Execute CreateCustomerUseCase : {}", createCustomerCommand);
+
+        try {
+            UserResponse userResponse = userFeignClient.getById(createCustomerCommand.userId());
+            log.info("User found: {}", userResponse);
+        } catch (FeignException.NotFound e) {
+            throw new CustomerDomainException("User not found");
+        } catch (UserServiceUnavailableException e) {
+            throw new CustomerDomainException(e.getMessage());
+        }
 
         if (customerRepository.existsByUsername(createCustomerCommand.username())) {
             throw new CustomerAlreadyExistsException("Username already exists");
