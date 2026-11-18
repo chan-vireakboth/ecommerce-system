@@ -2,6 +2,7 @@ package mptc.gov.kh.ecommerce.customer.persistence.adapter;
 
 import mptc.gov.kh.ecommerce.core.PageResponse;
 import mptc.gov.kh.ecommerce.customer.domain.dto.CustomerResult;
+import mptc.gov.kh.ecommerce.customer.domain.dto.GetCustomerByIdQuery;
 import mptc.gov.kh.ecommerce.customer.domain.port.output.CustomerRepository;
 import mptc.gov.kh.ecommerce.customer.persistence.entity.CustomerEntity;
 import mptc.gov.kh.ecommerce.customer.persistence.mapper.CustomerPersistenceMapper;
@@ -38,6 +39,12 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
                 .totalElements(customerResultPage.getTotalElements())
                 .hasNext(customerResultPage.hasNext())
                 .build();
+    }
+
+    @Override
+    public Optional<CustomerResult> findCustomerById(GetCustomerByIdQuery query) {
+        return customerJpaRepository.findById(query.customerId())
+                .map(customerPersistenceMapper::toCustomerResult);
     }
 
     @Override

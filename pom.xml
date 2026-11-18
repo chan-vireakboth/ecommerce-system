@@ -27,7 +27,6 @@
         <module>gateway-service</module>
         <module>user-servive</module>
         <module>customer-service/customer-service-client</module>
-        <module>common/common-core</module>
     </modules>
 
     <properties>
