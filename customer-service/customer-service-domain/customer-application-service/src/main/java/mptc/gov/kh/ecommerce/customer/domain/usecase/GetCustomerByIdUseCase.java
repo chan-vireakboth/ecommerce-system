@@ -1,24 +1,25 @@
 package mptc.gov.kh.ecommerce.customer.domain.usecase;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import mptc.gov.kh.ecommerce.customer.domain.dto.CustomerResult;
-import mptc.gov.kh.ecommerce.customer.domain.dto.GetCustomerByIdQuery;
-import mptc.gov.kh.ecommerce.customer.domain.exception.CustomerNotFoundException;
+import mptc.gov.kh.ecommerce.customer.domain.mapper.CustomerDataMapper;
 import mptc.gov.kh.ecommerce.customer.domain.port.output.CustomerRepository;
+import mptc.gov.kh.ecommerce.domain.valueobject.CustomerId;
+import mptc.gov.kh.ecommerce.exception.CustomerDomainException;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class GetCustomerByIdUseCase {
 
     private final CustomerRepository customerRepository;
+    private final CustomerDataMapper customerDataMapper;
 
-    public CustomerResult execute(GetCustomerByIdQuery query) {
-        log.info("Execute GetCustomerByIdUseCase : {}", query);
-
-        return customerRepository.findCustomerById(query)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer not found: " + query.customerId()));
+    public CustomerResult execute(UUID id) {
+        return customerRepository.findByIdWithCache(new CustomerId(id))
+                .orElseThrow(() -> new CustomerDomainException("Customer not found"));
     }
+
 }

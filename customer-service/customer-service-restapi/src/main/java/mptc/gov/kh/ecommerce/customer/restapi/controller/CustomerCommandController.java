@@ -1,11 +1,8 @@
 package mptc.gov.kh.ecommerce.customer.restapi.controller;
 
-
-import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerCommand;
-import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerResult;
-import mptc.gov.kh.ecommerce.customer.domain.dto.DeactivateCustomerCommand;
-import mptc.gov.kh.ecommerce.customer.domain.dto.UpdateCustomerCommand;
-import mptc.gov.kh.ecommerce.customer.domain.dto.UpdateCustomerResult;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import mptc.gov.kh.ecommerce.customer.domain.dto.*;
 import mptc.gov.kh.ecommerce.customer.domain.usecase.CreateCustomerUseCase;
 import mptc.gov.kh.ecommerce.customer.domain.usecase.DeactivateCustomerUseCase;
 import mptc.gov.kh.ecommerce.customer.domain.usecase.UpdateCustomerUseCase;
@@ -14,8 +11,6 @@ import mptc.gov.kh.ecommerce.customer.restapi.dto.CustomerCreateResponse;
 import mptc.gov.kh.ecommerce.customer.restapi.dto.CustomerUpdateRequest;
 import mptc.gov.kh.ecommerce.customer.restapi.dto.CustomerUpdateResponse;
 import mptc.gov.kh.ecommerce.customer.restapi.mapper.CustomerWebMapper;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +25,7 @@ public class CustomerCommandController {
     private final CreateCustomerUseCase createCustomerUseCase;
     private final UpdateCustomerUseCase updateCustomerUseCase;
     private final DeactivateCustomerUseCase deactivateCustomerUseCase;
+    private final DeleteCustomerUseCase deleteCustomerUseCase;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -53,4 +49,10 @@ public class CustomerCommandController {
         deactivateCustomerUseCase.execute(new DeactivateCustomerCommand(customerId));
     }
 
+
+    @DeleteMapping("/{customerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCustomerById(@PathVariable UUID customerId){
+        deleteCustomerUseCase.execute(new DeleteCustomerCommand(customerId));
+    }
 }

@@ -20,9 +20,7 @@ public class CustomerDomainServiceImpl implements CustomerDomainService{
     }
 
     @Override
-    public CustomerUpdatedEvent updateCustomer(Customer customer, String familyName, String givenName,
-                                               Email email, PhoneNumber phoneNumber) {
-        customer.updateCustomer(familyName, givenName, email, phoneNumber);
+    public CustomerUpdatedEvent updateCustomer(Customer customer){
         return new CustomerUpdatedEvent(customer, ZonedDateTime.now(ZoneId.of("UTC")));
     }
 
@@ -31,5 +29,4 @@ public class CustomerDomainServiceImpl implements CustomerDomainService{
         customer.deactivateCustomer();
         return new CustomerDeactivatedEvent(customer.getId(), ZonedDateTime.now(ZoneId.of("UTC")));
     }
-
 }

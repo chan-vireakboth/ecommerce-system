@@ -5,7 +5,6 @@ import mptc.gov.kh.ecommerce.core.PageResponse;
 import mptc.gov.kh.ecommerce.customer.client.dto.UserResponse;
 import mptc.gov.kh.ecommerce.customer.client.feign.UserFeignClient;
 import mptc.gov.kh.ecommerce.customer.domain.dto.CustomerResult;
-import mptc.gov.kh.ecommerce.customer.domain.dto.GetCustomerByIdQuery;
 import mptc.gov.kh.ecommerce.customer.domain.dto.GetCustomersQuery;
 import mptc.gov.kh.ecommerce.customer.domain.usecase.GetAllCustomerUseCase;
 import mptc.gov.kh.ecommerce.customer.domain.usecase.GetCustomerByIdUseCase;
@@ -21,27 +20,30 @@ import java.util.UUID;
 public class CustomerQueryController {
 
     private final UserFeignClient userFeignClient;
-    private final GetAllCustomerUseCase getAllCustomerUseCase;
+    private final GetAllCustomerUseCase getAllCustomersUseCase;
     private final GetCustomerByIdUseCase getCustomerByIdUseCase;
     private final CustomerWebMapper customerWebMapper;
+
+
+    @GetMapping("/{id}")
+    public CustomerResponse getByIdWithCache(@PathVariable UUID id) {
+        CustomerResult result = getCustomerByIdUseCase.execute(id);
+        return customerWebMapper.toCustomerResponse(result);
+    }
+
 
     @GetMapping
     public PageResponse<CustomerResponse> getAll(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "25") int size
-    ){
-       PageResponse<CustomerResult> result = getAllCustomerUseCase.execute(new GetCustomersQuery(page, size));
-       return customerWebMapper.toCustomerResponse(result);
-    }
-
-    @GetMapping("/{customerId}")
-    public CustomerResponse getById(@PathVariable UUID customerId) {
-        CustomerResult result = getCustomerByIdUseCase.execute(new GetCustomerByIdQuery(customerId));
+    ) {
+        PageResponse<CustomerResult> result = getAllCustomersUseCase.execute(new GetCustomersQuery(page, size));
         return customerWebMapper.toCustomerResponse(result);
     }
 
+
     @GetMapping("/check-user/{userId}")
-    public UserResponse checkUser(@PathVariable String userId){
+    public UserResponse checkUser(@PathVariable String userId) {
         return userFeignClient.getById(userId);
     }
 

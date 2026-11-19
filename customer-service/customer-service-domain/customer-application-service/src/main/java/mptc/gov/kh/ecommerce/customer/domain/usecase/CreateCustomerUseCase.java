@@ -6,6 +6,7 @@ import mptc.gov.kh.ecommerce.customer.client.exception.UserServiceUnavailableExc
 import mptc.gov.kh.ecommerce.customer.client.feign.UserFeignClient;
 import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerCommand;
 import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerResult;
+import mptc.gov.kh.ecommerce.customer.domain.dto.CustomerResult;
 import mptc.gov.kh.ecommerce.customer.domain.exception.CustomerAlreadyExistsException;
 import mptc.gov.kh.ecommerce.customer.domain.mapper.CustomerDataMapper;
 import mptc.gov.kh.ecommerce.customer.domain.port.output.CustomerRepository;
@@ -55,11 +56,13 @@ public class CreateCustomerUseCase {
 
         CustomerCreatedEvent customerCreatedEvent = customerDomainService.validateAndInitiateCustomer(customer);
 
-        Customer savedCustomer = customerRepository.save(customer);
+        CustomerResult savedCustomer = customerRepository.save(customer);
 
-        log.info("Customer created with id: {} at {}",
-                savedCustomer.getId().value(), customerCreatedEvent.getCreatedAt());
+        if (savedCustomer == null) {
+            log.error("Could not save customer with id: {}", createCustomerCommand.customerId());
+            throw new CustomerDomainException("Could not save customer with id " + createCustomerCommand.customerId());
+        }
 
-        return new CreateCustomerResult(savedCustomer.getId().value());
+        return new CreateCustomerResult(savedCustomer.id());
     }
 }

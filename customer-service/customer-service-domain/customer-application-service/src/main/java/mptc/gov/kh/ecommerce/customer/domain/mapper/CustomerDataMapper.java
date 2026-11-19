@@ -1,28 +1,22 @@
 package mptc.gov.kh.ecommerce.customer.domain.mapper;
 
+
 import mptc.gov.kh.ecommerce.customer.domain.dto.CreateCustomerCommand;
-import mptc.gov.kh.ecommerce.domain.valueobject.Email;
-import mptc.gov.kh.ecommerce.domain.valueobject.PhoneNumber;
+import mptc.gov.kh.ecommerce.customer.domain.dto.CustomerResult;
 import mptc.gov.kh.ecommerce.entity.Customer;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
+@Mapper(componentModel = "spring")
+public interface CustomerDataMapper {
 
-@Component
-public class CustomerDataMapper {
+    @Mapping(source = "email", target = "email.value")
+    @Mapping(source = "phoneNumber", target = "phoneNumber.value")
+    Customer createCustomerCommandToCustomer(CreateCustomerCommand createCustomerCommand);
 
-    // id and status are not set here: the domain sets them in initiateCustomer()
-    public Customer createCustomerCommandToCustomer(CreateCustomerCommand createCustomerCommand) {
-        return Customer.builder()
-                .username(createCustomerCommand.username())
-                .familyName(createCustomerCommand.familyName())
-                .givenName(createCustomerCommand.givenName())
-                .email(new Email(createCustomerCommand.email()))
-                .phoneNumber(toPhoneNumber(createCustomerCommand.phoneNumber()))
-                .build();
-    }
-
-    public PhoneNumber toPhoneNumber(String phoneNumber) {
-        return phoneNumber == null ? null : new PhoneNumber(phoneNumber);
-    }
+    @Mapping(source = "id.value", target = "id")
+    @Mapping(source = "email.value", target = "email")
+    @Mapping(source = "phoneNumber.value", target = "phoneNumber")
+    CustomerResult toCustomerResult(Customer customer);
 
 }

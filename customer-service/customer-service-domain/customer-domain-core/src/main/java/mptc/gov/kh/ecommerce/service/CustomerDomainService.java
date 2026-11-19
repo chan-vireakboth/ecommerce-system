@@ -11,8 +11,7 @@ import mptc.gov.kh.ecommerce.event.CustomerUpdatedEvent;
 public interface CustomerDomainService {
     CustomerCreatedEvent validateAndInitiateCustomer(Customer customer);
 
-    CustomerUpdatedEvent updateCustomer(Customer customer, String familyName, String givenName,
-                                        Email email, PhoneNumber phoneNumber);
+    CustomerUpdatedEvent updateCustomer(Customer customer);
 
     CustomerDeactivatedEvent deactivateCustomer(Customer customer);
 }

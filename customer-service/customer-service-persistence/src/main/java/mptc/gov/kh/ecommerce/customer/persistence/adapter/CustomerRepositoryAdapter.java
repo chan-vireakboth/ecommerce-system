@@ -10,6 +10,8 @@ import mptc.gov.kh.ecommerce.customer.persistence.repository.CustomerJpaReposito
 import mptc.gov.kh.ecommerce.domain.valueobject.CustomerId;
 import mptc.gov.kh.ecommerce.entity.Customer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +27,14 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
     private final CustomerPersistenceMapper customerPersistenceMapper;
 
 
-    @Cacheable(key = "allCustomers", value = "customer")
+    @CacheEvict(cacheNames = "customer", key = "#customerId.value")
+    @Override
+    public void deleteById(CustomerId customerId) {
+        customerJpaRepository.deleteById(customerId.value());
+    }
+
+
+    @Cacheable(key = "'allCustomers'", value = "customer")
     @Override
     public PageResponse<CustomerResult> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -41,17 +50,19 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
                 .build();
     }
 
+    @Cacheable(cacheNames = "customer", key = "#customerId.value()")
     @Override
-    public Optional<CustomerResult> findCustomerById(GetCustomerByIdQuery query) {
-        return customerJpaRepository.findById(query.customerId())
+    public Optional<CustomerResult> findByIdWithCache(CustomerId customerId) {
+        return customerJpaRepository.findById(customerId.value())
                 .map(customerPersistenceMapper::toCustomerResult);
     }
 
+    @CachePut(key = "#customer.id.value", cacheNames = "customer")
     @Override
-    public Customer save(Customer customer) {
+    public CustomerResult save(Customer customer) {
         CustomerEntity savedEntity = customerJpaRepository.save(
                 customerPersistenceMapper.customerToCustomerEntity(customer));
-        return customerPersistenceMapper.customerEntityToCustomer(savedEntity);
+        return customerPersistenceMapper.customerEntityToCustomerResult(savedEntity);
     }
 
     @Override
